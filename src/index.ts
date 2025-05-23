@@ -60,6 +60,17 @@ const resolvers = {
       return reviewsData.find((review) => review.id === args.reviewId);
     },
   },
+  Post: {
+    reviews: (parent) => {
+      console.log("THE PARENT IN NESTED RESOLVER IS ", parent);
+      return reviewsData.filter((review) => review.postId === parent.id);
+    },
+  },
+  Review: {
+    post: (parent) => {
+      return postsData.find((post) => post.id === parent.postId);
+    },
+  },
 };
 
 const server = new ApolloServer({
