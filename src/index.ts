@@ -1,7 +1,20 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { title } from "process";
-import { start } from "repl";
+
+const postsData = [
+  {
+    id: 1,
+    title: "Post One",
+  },
+  {
+    id: 2,
+    title: "Post Two",
+  },
+  {
+    id: 3,
+    title: "Post Three",
+  },
+];
 
 const typeDefs = `#graphql
     type Post {
@@ -10,14 +23,18 @@ const typeDefs = `#graphql
     }
 
     type Query {
-        post: Post!
+        posts: [Post!]
+        post(postId: Int!): Post! # defining an argument
     }
 `;
 
 const resolvers = {
   Query: {
-    post: () => {
-      return { id: 1, title: "Post One" };
+    posts: () => {
+      return postsData;
+    },
+    post: (_, { postId }: { postId: number }) => {
+      return postsData.find((post) => post.id === postId);
     },
   },
 };
