@@ -1,5 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { typeDefs } from "./schema.js";
 
 const postsData = [
   {
@@ -23,52 +24,36 @@ const reviewsData = [
   { id: 4, content: "Review for Post Three", postId: 3 },
 ];
 
-const typeDefs = `#graphql
-
-    type Review {
-      id: Int!
-      content:String!
-      post: Post!
-    }
-
-    type Post {
-      id: Int!
-      title: String!
-      reviews: [Review!]
-    }
-
-    type Query {
-        posts: [Post!]
-        post(postId: Int!): Post! # defining an argument
-        reviews: [Review!]
-        review(reviewId: Int!): Review!
-    }
-`;
-
 const resolvers = {
   Query: {
     posts: () => {
       return postsData;
     },
-    post: (_, { postId }: { postId: number }) => {
+    post: (_: any, { postId }: { postId: number }) => {
       return postsData.find((post) => post.id === postId);
     },
     reviews: () => {
       return reviewsData;
     },
-    review: (_, args: { reviewId: number }) => {
+    review: (_: any, args: { reviewId: number }) => {
       return reviewsData.find((review) => review.id === args.reviewId);
     },
   },
   Post: {
-    reviews: (parent) => {
+    reviews: (parent: any) => {
       console.log("THE PARENT IN NESTED RESOLVER IS ", parent);
       return reviewsData.filter((review) => review.postId === parent.id);
     },
   },
   Review: {
-    post: (parent) => {
+    post: (parent: any) => {
       return postsData.find((post) => post.id === parent.postId);
+    },
+  },
+  Mutation: {
+    deletePost: (_: any, args: { postId: number }) => {
+      const newPosts = postsData.filter((post) => post.id !== args.postId);
+      return newPosts;
     },
   },
 };
