@@ -54,6 +54,11 @@ const resolvers = {
             const newPosts = postsData.filter((post) => post.id !== args.postId);
             return newPosts;
         },
+        createPost: (_, args) => {
+            const newPost = { id: 4, title: args.input.title };
+            console.log("THE NEW POST IS ", newPost);
+            return newPost;
+        },
     },
 };
 const server = new server_1.ApolloServer({

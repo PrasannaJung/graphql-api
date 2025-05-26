@@ -24,6 +24,11 @@ exports.typeDefs = `#graphql
 
     type Mutation {
       deletePost(postId:Int!) : [Post!] 
+      createPost(input:PostInput!): Post!
+    }
+
+    input PostInput {
+      title:String!
     }
     
 `;

@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./schema";
+import { title } from "process";
 
 const postsData = [
   {
@@ -54,6 +55,11 @@ const resolvers = {
     deletePost: (_: any, args: { postId: number }) => {
       const newPosts = postsData.filter((post) => post.id !== args.postId);
       return newPosts;
+    },
+    createPost: (_: any, args: { input: { title: string } }) => {
+      const newPost = { id: 4, title: args.input.title };
+      console.log("THE NEW POST IS ", newPost);
+      return newPost;
     },
   },
 };
