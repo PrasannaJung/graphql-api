@@ -1,6 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { typeDefs } from "./schema.js";
+import { typeDefs } from "./schema";
 
 const postsData = [
   {
@@ -63,10 +63,10 @@ const server = new ApolloServer({
   resolvers,
 });
 
-const { url } = await startStandaloneServer(server, {
+startStandaloneServer(server, {
   listen: {
     port: 3000,
   },
+}).then((data) => {
+  console.log("THE SERVER IS RUNNING AT ", data.url);
 });
-
-console.log("GraphQL server ready at " + url);

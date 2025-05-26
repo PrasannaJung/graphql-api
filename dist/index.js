@@ -1,6 +1,8 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { typeDefs } from "./schema.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const server_1 = require("@apollo/server");
+const standalone_1 = require("@apollo/server/standalone");
+const schema_1 = require("./schema");
 const postsData = [
     {
         id: 1,
@@ -54,13 +56,14 @@ const resolvers = {
         },
     },
 };
-const server = new ApolloServer({
-    typeDefs,
+const server = new server_1.ApolloServer({
+    typeDefs: schema_1.typeDefs,
     resolvers,
 });
-const { url } = await startStandaloneServer(server, {
+(0, standalone_1.startStandaloneServer)(server, {
     listen: {
         port: 3000,
     },
+}).then((data) => {
+    console.log("THE SERVER IS RUNNING AT ", data.url);
 });
-console.log("GraphQL server ready at " + url);
